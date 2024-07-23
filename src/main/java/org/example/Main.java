@@ -1,23 +1,19 @@
 package org.example;
 
-import org.example.Entities.Enums.OrderStatus;
-import org.example.Entities.Order;
+import org.example.entities.Account;
+import org.example.entities.SavingsAccount;
 
-import java.util.Date;
-
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
-        Order order = new Order(1080, new Date(), OrderStatus.PENDING_PAYMENT);
 
-        System.out.println(order);
+	public static void main(String[] args) {
 
-        OrderStatus os1 = OrderStatus.DELIVILERED;
+		Account x = new Account(1020,"Alex", 1000.0);
+		Account y = new SavingsAccount(1020,"Maria", 1000.0,0.01);
 
-        OrderStatus os2 = OrderStatus.valueOf("DELIVILERED");
+		x.withdraw(50.0);
+		y.withdraw(50.0);
 
-        System.out.println(os1);
-        System.out.println(os2);
-    }
+		System.out.println(x.getBalance());
+		System.out.println(y.getBalance());
+	}
 }
