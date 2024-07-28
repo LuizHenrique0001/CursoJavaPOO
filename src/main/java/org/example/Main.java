@@ -1,10 +1,9 @@
 package org.example;
 
 
-import org.example.entities.Company;
-import org.example.entities.Individual;
-import org.example.entities.TaxPayer;
+import org.example.entities.Product;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -13,48 +12,46 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
-
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
-		List<TaxPayer> list = new ArrayList<>();
 
-		System.out.print("Enter the number of tax payers: ");
-		int n = sc.nextInt();
+		List<Product> list = new ArrayList<>();
 
-		for (int i = 1; i <= n; i++) {
-			System.out.print("Tax payer #" + i + " data:" );
-			System.out.print("Individual or Company (i/c)?");
-			char ch = sc.next().charAt(0);
+		System.out.println("Enter file path: ");
+		String path = sc.nextLine();
 
-			System.out.print("Name: ");
-			sc.nextLine();
-			String name = sc.nextLine();
+		File sourceFile = new File(path);
+		String sourceFolderStr = sourceFile.getParent();
 
-			System.out.print("Anual income: ");
-			double Income = sc.nextDouble();
+		boolean success = new File(sourceFolderStr + "/out").mkdir();
 
-			if (ch == 'i') {
-				System.out.print("Health expenditures: ");
-				double health = sc.nextDouble();
-				list.add(new Individual(name, Income, health));
-			}else{
-				System.out.print("Number of employees: ");
-				int employees = sc.nextInt();
-				list.add(new Company(name, Income, employees));
+		String targetFilesStr = sourceFolderStr + "/out/summary.csv";
+
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+
+			String itemCsv = br.readLine();
+			while (itemCsv != null) {
+				String[] fields = itemCsv.split(",");
+				String name = fields[0];
+				double prince = Double.parseDouble(fields[1]);
+				int quantity = Integer.parseInt(fields[2]);
+
+				list.add(new Product(name, prince, quantity));
+				itemCsv = br.readLine();
 			}
+			try(BufferedWriter bw = new BufferedWriter(new FileWriter(targetFilesStr))){
 
-		}
-		double sum = 0.0;
-		System.out.println();
-		System.out.println("TAXES PAID:");
-		for (TaxPayer tp : list){
-			double tax = tp.tax();
-			System.out.println(tp.getName() + ": $ " + String.format("%.2f", tax));
-			sum += tax;
-		}
-		System.out.println();
-		System.out.println("TOTAL TAXES: $ " + String.format("%.2f", sum));
+				for (Product item: list){
+					bw.write(item.getName() + "," + String.format("%.2f", item.total()));
+					bw.newLine();
+				}
 
+			} catch (IOException e) {
+				System.out.println("Error: " + e.getMessage());
+			}
+		} catch (IOException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
 		sc.close();
 	}
 }
