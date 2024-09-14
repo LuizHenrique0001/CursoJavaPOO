@@ -1,57 +1,49 @@
 package org.example;
 
 
-import org.example.entities.Product;
+import org.example.Services.BrazilTaxService;
+import org.example.Services.RentalService;
+import org.example.entities.CarRental;
+import org.example.entities.Vehicle;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[]args) {
+
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 
-		List<Product> list = new ArrayList<>();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-		System.out.println("Enter file path: ");
-		String path = sc.nextLine();
+		System.out.print("Entre com os dados do aluguel");
+		System.out.print("Modelo do carro: ");
+		String carModel = sc.nextLine();
+		System.out.println("Retirada (dd/MM/yyyy hh:mm): ");
+		LocalDateTime start = LocalDateTime.parse(sc.nextLine(), fmt);
+		System.out.println("Retorno (dd/MM/yyyy hh:mm): ");
+		LocalDateTime finish = LocalDateTime.parse(sc.nextLine(), fmt);
 
-		File sourceFile = new File(path);
-		String sourceFolderStr = sourceFile.getParent();
+		CarRental cr = new CarRental(start, finish, new Vehicle(carModel));
 
-		boolean success = new File(sourceFolderStr + "/out").mkdir();
+		System.out.print("Entre com o preco pro hora: ");
+		double princePerHour = sc.nextDouble();
+		System.out.print("Entre com o preco pro dia: ");
+		double princePerDay = sc.nextDouble();
 
-		String targetFilesStr = sourceFolderStr + "/out/summary.csv";
+		RentalService rentalService = new RentalService(princePerHour, princePerDay, new BrazilTaxService());
 
-		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+		rentalService.processInvoice(cr);
 
-			String itemCsv = br.readLine();
-			while (itemCsv != null) {
-				String[] fields = itemCsv.split(",");
-				String name = fields[0];
-				double prince = Double.parseDouble(fields[1]);
-				int quantity = Integer.parseInt(fields[2]);
+		System.out.println("FATURA: ");
+		System.out.println("Pagamento basico: " + cr.getInvoice().getBasicPayment());
+		System.out.println("Imposto: " + cr.getInvoice().getTax());
+		System.out.println("Pagamento total: " + cr.getInvoice().getTotalPayment());
 
-				list.add(new Product(name, prince, quantity));
-				itemCsv = br.readLine();
-			}
-			try(BufferedWriter bw = new BufferedWriter(new FileWriter(targetFilesStr))){
-
-				for (Product item: list){
-					bw.write(item.getName() + "," + String.format("%.2f", item.total()));
-					bw.newLine();
-				}
-
-			} catch (IOException e) {
-				System.out.println("Error: " + e.getMessage());
-			}
-		} catch (IOException e) {
-			System.out.println("Error: " + e.getMessage());
-		}
 		sc.close();
 	}
 }
