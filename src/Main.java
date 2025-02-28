@@ -1,29 +1,65 @@
 import java.util.Locale;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String product1 = "Computer";
-        String product2 = "Office desk";
 
-        int age = 30;
-        int code = 5290;
-        char gender = 'F';
+        Scanner sc = new Scanner(System.in);
 
-        double prince1 = 2100.0;
-        double prince2 = 650.50;
-        double measure = 53.234567;
+        System.out.println("Escolha qual atividade gostaria de testar(1, 2, 3, 4, 5):");
+        int escolha = sc.nextInt();
 
+        if (escolha == 1) {
+            System.out.println("Soma");
 
-        System.out.println("Products:");
-        System.out.printf("%s, which prince is $ %.2f%n", product1, prince1);
-        System.out.printf("%s, which prince is $ %.2f%n", product2, prince2);
-        System.out.println();
-        System.out.printf("Record: %d years old, code %d and gender: %s%n ", age, code, gender);
-        System.out.println();
-        System.out.printf("Measue with eight decimal places: %.8f%n", measure);
-        System.out.printf("Rouded (three decimal places): %.3f%n", measure);
-        Locale.setDefault(Locale.US);
-        System.out.printf("US decimal poit: %.3f%n", measure);
+            int v1 = sc.nextInt();
+            int v2 = sc.nextInt();
 
+            int result = v1 + v2;
+
+            System.out.println("Soma = " + result + "%n");
+        }
+        if (escolha == 2) {
+            double v3 = sc.nextDouble();
+
+            double result2 = 3.14159 * Math.pow(v3, 2);
+
+            System.out.printf("A = %.4f%n", result2);
+        }
+        if (escolha == 3) {
+            int v4 = sc.nextInt();
+            int v5 = sc.nextInt();
+            int v6 = sc.nextInt();
+            int v7 = sc.nextInt();
+
+            int result3 = (v4 * v5 - v6 * v7);
+
+            System.out.println("Diferenca = " + result3 + "%n");
+        }
+        if (escolha == 4) {
+            int numEmployee = sc.nextInt();
+            int numHour = sc.nextInt();
+            double velueHour = sc.nextDouble();
+
+            double valueSalary = numHour * velueHour;
+
+            System.out.println("NUMBER = " + numEmployee);
+            System.out.printf("SALARY = U$ %.2f%n", valueSalary);
+        }
+        if (escolha == 5) {
+            int cod1 = sc.nextInt();
+            int qant1 = sc.nextInt();
+            double velueCod1 = sc.nextDouble();
+
+            int cod2 = sc.nextInt();
+            int qant2 = sc.nextInt();
+            double velueCod2 = sc.nextDouble();
+
+            double velueTotal = qant1 * velueCod1 + qant2 * velueCod2;
+
+            System.out.printf("VALOR A PAGAR: R$ %.2f%n", velueTotal);
+        }
+
+        sc.close();
     }
 }
