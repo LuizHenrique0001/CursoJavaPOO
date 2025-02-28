@@ -4,61 +4,79 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+        Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Escolha qual atividade gostaria de testar(1, 2, 3, 4, 5):");
-        int escolha = sc.nextInt();
+        int atividade;
 
-        if (escolha == 1) {
-            System.out.println("Soma");
+        System.out.print("Escolha qual atividade voce quer fazer (1, 2, 3): ");
 
-            int v1 = sc.nextInt();
-            int v2 = sc.nextInt();
+        atividade = sc.nextInt();
 
-            int result = v1 + v2;
+        if(atividade == 1){
+            int password;
 
-            System.out.println("Soma = " + result + "%n");
+            password = sc.nextInt();
+
+            while (password != 2002) {
+
+                System.out.println("Senha Invalida");
+                password = sc.nextInt();
+            }
+
+            System.out.println("Acesso Permitido");
         }
-        if (escolha == 2) {
-            double v3 = sc.nextDouble();
+        if(atividade == 2) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
 
-            double result2 = 3.14159 * Math.pow(v3, 2);
-
-            System.out.printf("A = %.4f%n", result2);
+            while (x != 0 && y != 0) {
+                if (x > 0 && y > 0) {
+                    System.out.println("primeiro");
+                } else if (x < 0 && y > 0) {
+                    System.out.println("segundo");
+                } else if (x < 0 && y < 0) {
+                    System.out.println("terceiro");
+                } else {
+                    System.out.println("quarto");
+                }
+                x = sc.nextInt();
+                y = sc.nextInt();
+            }
         }
-        if (escolha == 3) {
-            int v4 = sc.nextInt();
-            int v5 = sc.nextInt();
-            int v6 = sc.nextInt();
-            int v7 = sc.nextInt();
 
-            int result3 = (v4 * v5 - v6 * v7);
+        if(atividade == 3) {
 
-            System.out.println("Diferenca = " + result3 + "%n");
+        int combustivel, alcool = 0, gasoliza = 0, diesel = 0;
+
+
+        combustivel = sc.nextInt();
+
+        while (combustivel != 4){
+
+            if (combustivel == 1){
+                alcool+= 1;
+            }else
+            if (combustivel == 2){
+                gasoliza+= 1;
+            }else
+            if (combustivel == 3){
+                diesel+= 1;
+            }else{
+                System.out.println("Valor Incorreto");
+            }
+
+            combustivel = sc.nextInt();
         }
-        if (escolha == 4) {
-            int numEmployee = sc.nextInt();
-            int numHour = sc.nextInt();
-            double velueHour = sc.nextDouble();
+        System.out.println("MUITO OBRIGADO");
+        System.out.println("Alcool: "+ alcool);
+        System.out.println("Gasolina: "+ gasoliza);
+        System.out.println("Diesel: "+ diesel);
 
-            double valueSalary = numHour * velueHour;
 
-            System.out.println("NUMBER = " + numEmployee);
-            System.out.printf("SALARY = U$ %.2f%n", valueSalary);
+
         }
-        if (escolha == 5) {
-            int cod1 = sc.nextInt();
-            int qant1 = sc.nextInt();
-            double velueCod1 = sc.nextDouble();
 
-            int cod2 = sc.nextInt();
-            int qant2 = sc.nextInt();
-            double velueCod2 = sc.nextDouble();
-
-            double velueTotal = qant1 * velueCod1 + qant2 * velueCod2;
-
-            System.out.printf("VALOR A PAGAR: R$ %.2f%n", velueTotal);
-        }
 
         sc.close();
     }
