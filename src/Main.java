@@ -1,3 +1,7 @@
+import Entity.Employee;
+import Entity.Rectangle;
+import Entity.Student;
+
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -7,74 +11,52 @@ public class Main {
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
 
-        int atividade;
+        System.out.println("Escolha qual atividade gostaria de testar(1, 2, 3):");
+        int escolha = sc.nextInt();
 
-        System.out.print("Escolha qual atividade voce quer fazer (1, 2, 3): ");
+        if(escolha == 1){
+            System.out.println("Enter rectangle width and height:");
+            double width = sc.nextDouble();
+            double height = sc.nextDouble();
 
-        atividade = sc.nextInt();
+            Rectangle rec = new Rectangle(width, height);
 
-        if(atividade == 1){
-            int password;
-
-            password = sc.nextInt();
-
-            while (password != 2002) {
-
-                System.out.println("Senha Invalida");
-                password = sc.nextInt();
-            }
-
-            System.out.println("Acesso Permitido");
-        }
-        if(atividade == 2) {
-            int x = sc.nextInt();
-            int y = sc.nextInt();
-
-            while (x != 0 && y != 0) {
-                if (x > 0 && y > 0) {
-                    System.out.println("primeiro");
-                } else if (x < 0 && y > 0) {
-                    System.out.println("segundo");
-                } else if (x < 0 && y < 0) {
-                    System.out.println("terceiro");
-                } else {
-                    System.out.println("quarto");
-                }
-                x = sc.nextInt();
-                y = sc.nextInt();
-            }
+            System.out.println(rec);
         }
 
-        if(atividade == 3) {
+        if(escolha == 2){
+            System.out.print("Name:");
+            String name = sc.nextLine();
+            System.out.print("Gross Salary:");
+            double grossSalary = sc.nextDouble();
+            System.out.print("Tax:");
+            double tax = sc.nextDouble();
 
-        int combustivel, alcool = 0, gasoliza = 0, diesel = 0;
+            Employee empl = new Employee(name, grossSalary, tax);
 
+            System.out.println("Employee: " + empl);
 
-        combustivel = sc.nextInt();
+            System.out.println("Which percentage to increase salary?");
+            double percentage = sc.nextDouble();
+            empl.increaseSalary(percentage);
 
-        while (combustivel != 4){
-
-            if (combustivel == 1){
-                alcool+= 1;
-            }else
-            if (combustivel == 2){
-                gasoliza+= 1;
-            }else
-            if (combustivel == 3){
-                diesel+= 1;
-            }else{
-                System.out.println("Valor Incorreto");
-            }
-
-            combustivel = sc.nextInt();
+            System.out.println();
+            System.out.println("Updated data: " + empl);
         }
-        System.out.println("MUITO OBRIGADO");
-        System.out.println("Alcool: "+ alcool);
-        System.out.println("Gasolina: "+ gasoliza);
-        System.out.println("Diesel: "+ diesel);
 
+        if (escolha == 3){
+            String name = sc.nextLine();
+            double not1 = sc.nextDouble();
+            double not2 = sc.nextDouble();
+            double not3 = sc.nextDouble();
 
+            Student student = new Student(name, not1, not2, not3);
 
+            System.out.print("FINAL GRADE = " + student.result());
+        }
+
+        if (escolha != 1 || escolha != 2 || escolha != 3){
+            System.out.println("VALOR INVALIDO");
         }
 
 
