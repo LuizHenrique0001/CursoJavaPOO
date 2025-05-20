@@ -1,4 +1,4 @@
-import Entity.CorrencyConverter;
+import Entity.Account;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -9,12 +9,39 @@ public class Main {
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
 
-        System.out.print(" What is the dollar price? ");
-        double valorDollar = sc.nextDouble();
-        System.out.print("How many dollars will be bought? ");
-        double dollarsBought = sc.nextDouble();
+        System.out.print("Enter account number:");
+        int numberAccount = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Enter account holder:");
+        String holderAccount = sc.nextLine();
+        System.out.print("Is there na initial deposit (y/n):");
+        char deposit = sc.nextLine().charAt(0);
+        double valueInitialAccount = 0;
+        if (deposit == 'y') {
+            System.out.print("Enter initial deposit value: ");
+            valueInitialAccount = sc.nextDouble();
+        }
 
-        System.out.printf("Amount to be paid in reais = %.2f ", CorrencyConverter.calcConverter(valorDollar, dollarsBought));
+        Account account = new Account(numberAccount, holderAccount, valueInitialAccount);
+        System.out.println("Account data:");
+        System.out.println(account);
+        System.out.println();
+
+        System.out.print("Enter a deposit value: ");
+        double outerDepisit = sc.nextDouble();
+
+        account.depositValueAccount(outerDepisit);
+
+        System.out.println("Updated account data:");
+        System.out.println(account);
+
+        System.out.print("Enter a withdraw value: ");
+        double withdraw = sc.nextDouble();
+
+        account.withdrawValueAccount(withdraw);
+        System.out.println("Updated account data:");
+        System.out.println(account);
+
 
         sc.close();
     }
