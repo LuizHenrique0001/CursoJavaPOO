@@ -1,7 +1,11 @@
-import Entity.Account;
+import Entity.Employee;
 
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,39 +13,45 @@ public class Main {
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter account number:");
-        int numberAccount = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Enter account holder:");
-        String holderAccount = sc.nextLine();
-        System.out.print("Is there na initial deposit (y/n):");
-        char deposit = sc.nextLine().charAt(0);
-        double valueInitialAccount = 0;
-        if (deposit == 'y') {
-            System.out.print("Enter initial deposit value: ");
-            valueInitialAccount = sc.nextDouble();
+        System.out.print("How many employees will be registered?:");
+        int quantityEmployee = sc.nextInt();
+
+        List<Employee> employeesList = new ArrayList<>();
+
+        for (int i=1; i<=quantityEmployee; i++){
+
+            System.out.println("Emplyoee #"+ i);
+            System.out.print("Id: ");
+            int idEmployee = sc.nextInt();
+            sc.nextLine();
+            System.out.print("Name: ");
+            String nameEmployee = sc.nextLine();
+            System.out.print("Salary: ");
+            double salaryEmployee = sc.nextDouble();
+
+            employeesList.add(new Employee(idEmployee, nameEmployee, salaryEmployee));
         }
 
-        Account account = new Account(numberAccount, holderAccount, valueInitialAccount);
-        System.out.println("Account data:");
-        System.out.println(account);
-        System.out.println();
+        System.out.print("Enter the employee id that will have salary increase: ");
+        int idEmployee = sc.nextInt();
 
-        System.out.print("Enter a deposit value: ");
-        double outerDepisit = sc.nextDouble();
+        Employee research = employeesList.stream().filter(x -> x.getId() == idEmployee).findFirst().orElse(null);
 
-        account.depositValueAccount(outerDepisit);
+        if (research != null) {
 
-        System.out.println("Updated account data:");
-        System.out.println(account);
+            System.out.print("Enter the percentage: ");
+            double percentage = sc.nextDouble();
+            research.increaseSalary(percentage);
 
-        System.out.print("Enter a withdraw value: ");
-        double withdraw = sc.nextDouble();
+        } else {
 
-        account.withdrawValueAccount(withdraw);
-        System.out.println("Updated account data:");
-        System.out.println(account);
+            System.out.println("This id not exist");
+        }
 
+        System.out.println("List of employees:");
+        for(Employee x : employeesList){
+            System.out.print(x);
+        }
 
         sc.close();
     }
