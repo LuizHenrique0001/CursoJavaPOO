@@ -1,11 +1,5 @@
-import Entity.Employee;
-
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,44 +7,39 @@ public class Main {
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("How many employees will be registered?:");
-        int quantityEmployee = sc.nextInt();
+        int n = sc.nextInt();
+        int[][] mat = new int[n][n];
 
-        List<Employee> employeesList = new ArrayList<>();
-
-        for (int i=1; i<=quantityEmployee; i++){
-
-            System.out.println("Emplyoee #"+ i);
-            System.out.print("Id: ");
-            int idEmployee = sc.nextInt();
-            sc.nextLine();
-            System.out.print("Name: ");
-            String nameEmployee = sc.nextLine();
-            System.out.print("Salary: ");
-            double salaryEmployee = sc.nextDouble();
-
-            employeesList.add(new Employee(idEmployee, nameEmployee, salaryEmployee));
+        for (int i=0; i<mat.length; i++){
+            for (int j=0; j<mat[i].length; j++){
+                mat[i][j] = sc.nextInt();
+            }
         }
 
-        System.out.print("Enter the employee id that will have salary increase: ");
-        int idEmployee = sc.nextInt();
+        int number = sc.nextInt();
 
-        Employee research = employeesList.stream().filter(x -> x.getId() == idEmployee).findFirst().orElse(null);
+        for (int i=0; i< mat.length; i++) {
 
-        if (research != null) {
+            for (int j=0; j<mat[i].length; j++) {
 
-            System.out.print("Enter the percentage: ");
-            double percentage = sc.nextDouble();
-            research.increaseSalary(percentage);
+                if (mat[i][j] == number){
+                    System.out.println("Position "+i+", "+j);
 
-        } else {
+                    if (j > 0) {
+                        System.out.println("Left: " + mat[i][j-1]);
+                    }
+                    if (j < n - 1) {
+                        System.out.println("Reght: " + mat[i][j+1]);
+                    }
+                    if (i > 0) {
+                        System.out.println("Up: " + mat[i-1][j]);
+                    }
+                    if (i < n - 1) {
+                        System.out.println("Down: " + mat[i+1][j]);
+                    }
 
-            System.out.println("This id not exist");
-        }
-
-        System.out.println("List of employees:");
-        for(Employee x : employeesList){
-            System.out.print(x);
+                }
+            }
         }
 
         sc.close();
