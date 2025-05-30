@@ -1,0 +1,26 @@
+package Entity;
+
+public class ImportedProduct extends Product{
+
+    private Double customsFee;
+
+    public ImportedProduct(String name, Double price, Double customsFee) {
+        super(name, price);
+        this.customsFee = customsFee;
+    }
+
+    public Double getCustomsFee() {
+        return customsFee;
+    }
+
+    public Double totalPrince(){
+        return getPrice()+customsFee;
+    }
+
+    @Override
+    public String priceTag(){
+        return getName()+ " $"+ String.format("%.2f", totalPrince())+" (Customs fee: "+ customsFee+")";
+    }
+
+
+}

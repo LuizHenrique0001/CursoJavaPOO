@@ -3,20 +3,30 @@ package Entity;
 public class Product {
 
     private String name;
-    private Double prince;
+    private Double price;
 
-    public Product(String name, Double prince) {
+    public Product(String name, Double price) {
         this.name = name;
-        this.prince = prince;
+        this.price = price;
     }
 
     public String getName() {
         return name;
     }
 
-    public Double getPrince() {
-        return prince;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public Double getPrice() {
+        return price;
+    }
 
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String priceTag(){
+        return name + " $"+ String.format("%.2f", price);
+    }
 }

@@ -1,62 +1,52 @@
-import Entity.Client;
-import Entity.Order;
-import Entity.OrderItem;
+import Entity.ImportedProduct;
 import Entity.Product;
-import Entity.enuns.OrderStatus;
+import Entity.UsedProduct;
 
-import java.security.interfaces.DSAPublicKey;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Formatter;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws ParseException {
 
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
+        List<Product> products = new ArrayList<>();
 
-        System.out.println("Enter client data:");
-        System.out.print("Name:");
-        String clientName = sc.nextLine();
-        System.out.print("Email:");
-        String clientEmail = sc.nextLine();
-        System.out.print("Birth date (DD/MM/YYYY):");
-        String clientBirthDateString = sc.nextLine();
-        Date clientBirthDate = new SimpleDateFormat("dd/MM/yyyy").parse(clientBirthDateString);
+        System.out.print("Entre com o numero de produtos:");
+        int n = sc.nextInt();
 
-        Client client = new Client(clientName, clientEmail, clientBirthDate);
+        for(int i=1; i<=n; i++ ){
 
-        System.out.println("Enter order data:");
-        System.out.print("Status (PENDING_PAYMENT, PROCESSING, SHIPPED, DELIVERED):");
-        String status = sc.nextLine();
+            System.out.println("Produto #"+i+":");
 
-        Order order = new Order(Instant.now(), OrderStatus.valueOf(status), client);
-
-        System.out.print("How many items to this order?");
-        int quantityIdems = sc.nextInt();
-
-        for(int i=1; i<=quantityIdems;i++){
-
-            System.out.println("Enter #"+i+" item data:");
-            System.out.print("Product name:");
-            String productName = sc.nextLine();
+            System.out.print("Comum, Usado ou importado (c/i/u)? ");
+            char typeProduct = sc.next().charAt(0);
             sc.nextLine();
-            System.out.print("Product price:");
-            double productPrice = sc.nextDouble();
-            System.out.print("Quantity:");
-            int quantity = sc.nextInt();
-
-            order.addItem(new OrderItem(quantity, productPrice, new Product(productName, productPrice)));
-
+            System.out.print("Nome: ");
+            String name = sc.nextLine();
+            System.out.print("Preço: ");
+            Double price = sc.nextDouble();
+            if (typeProduct == 'i'){
+                System.out.print("Custo Alfandega: ");
+                products.add(new ImportedProduct(name, price, sc.nextDouble()));
+            }else
+            if (typeProduct == 'u'){
+                sc.nextLine();
+                System.out.print("Manufacture date (DD/MM/YYYY): ");
+                products.add(new UsedProduct( name, price,  new SimpleDateFormat("dd/MM/yyyy").parse(sc.nextLine())));
+            }else
+            if(typeProduct == 'c'){
+                products.add(new Product(name, price));
+            }
         }
-        System.out.println(order);
 
+        System.out.println("TAG DE PREÇOS");
+        for (Product item: products){
+
+            System.out.println(item.priceTag());
+        }
 
         sc.close();
 
