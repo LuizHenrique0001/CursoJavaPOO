@@ -1,51 +1,52 @@
-import Model.Entity.Contract;
-import Model.Entity.Installment;
-import Model.Service.ContractService;
-import Model.Service.PaypalService;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        Locale.setDefault(Locale.US);
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = null;
+        Set<Integer> codStudent = new HashSet<>();
+        try {
 
-        System.out.println("Entre os dados do contrato: ");
-        System.out.print("Numero: ");
-        int number = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Data (dd/MM/yyyy): ");
+            sc = new Scanner(System.in);
+            int n;
+                            //COURSE A
+            System.out.print("How many students for course A?: ");
+            n = sc.nextInt();
 
-        String stringDate = sc.nextLine();
+            for (int i=0;i<n;i++){
+                codStudent.add(sc.nextInt());
+            }
+                            //COURSE B
+            System.out.print("How many students for course B?: ");
+            n = sc.nextInt();
 
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = LocalDate.parse(stringDate, fmt);
+            for (int i=0;i<n;i++){
+                codStudent.add(sc.nextInt());
+            }
+                            //COURSE C
+            System.out.print("How many students for course C?: ");
+            n = sc.nextInt();
 
-        System.out.print("Valor do contrato: ");
-        double valueContract = sc.nextDouble();
+            for (int i=0;i<n;i++){
+                codStudent.add(sc.nextInt());
+            }
 
-        Contract contract = new Contract(date, number, valueContract);
+            System.out.println();
+            System.out.print("Total students: "+ codStudent.size());
 
-        System.out.print("Entre com o numero de parcelas: ");
-        int numberInstallments = sc.nextInt();
+            sc.close();
 
-        ContractService contractService = new ContractService(new PaypalService());
-        contractService.processContract(contract, numberInstallments);
+        } catch (Exception e) {
 
-        System.out.println("Parcelas: ");
-        for (Installment item: contract.getInstallments()){
-            System.out.println(item);
+            if (sc != null){
+                sc.close();
+            }
+            System.out.print("Error: "+ e.getMessage());
         }
 
-
-        sc.close();
 
     }
 }
