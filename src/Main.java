@@ -1,52 +1,46 @@
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.Set;
+import Model.Entity.Employee;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
 
-        Scanner sc = null;
-        Set<Integer> codStudent = new HashSet<>();
-        try {
+        Scanner sc = new Scanner(System.in);
 
-            sc = new Scanner(System.in);
-            int n;
-                            //COURSE A
-            System.out.print("How many students for course A?: ");
-            n = sc.nextInt();
+        System.out.print("Enter full file path: ");
+        String path = sc.nextLine();
+        System.out.print("Enter salary: ");
+        Double baseSalary = sc.nextDouble();
 
-            for (int i=0;i<n;i++){
-                codStudent.add(sc.nextInt());
-            }
-                            //COURSE B
-            System.out.print("How many students for course B?: ");
-            n = sc.nextInt();
 
-            for (int i=0;i<n;i++){
-                codStudent.add(sc.nextInt());
-            }
-                            //COURSE C
-            System.out.print("How many students for course C?: ");
-            n = sc.nextInt();
+        try (BufferedReader br = new BufferedReader(new FileReader(path))){
 
-            for (int i=0;i<n;i++){
-                codStudent.add(sc.nextInt());
+            String line = br.readLine();
+
+            List<Employee> employeeList = new ArrayList<>();
+            while(line != null){
+
+                String[] employees = line.split(",");
+                employeeList.add(new Employee(employees[1], employees[0], Double.parseDouble(employees[2])));
+                line = br.readLine();
             }
 
-            System.out.println();
-            System.out.print("Total students: "+ codStudent.size());
+            List<Employee> newListToSalaryBase = employeeList.stream().filter(employee -> employee.getSalary() >= baseSalary).toList();
 
-            sc.close();
+            Double sum = employeeList.stream().filter(employee -> employee.getEmail().charAt(0) == 'm').map(Employee::getSalary).reduce(0.0, Double::sum);
+
+            for (Employee item: newListToSalaryBase){
+                System.out.println(item);
+            }
+            System.out.print("Sum of salary of people whose email starts with 'M': "+ sum);
 
         } catch (Exception e) {
-
-            if (sc != null){
-                sc.close();
-            }
             System.out.print("Error: "+ e.getMessage());
         }
 
-
+        sc.close();
     }
 }
