@@ -1,46 +1,39 @@
-import Model.Entity.Employee;
+import Model.Entities.Department;
+import Model.dao.DaoFactory;
+import Model.dao.DepartmentDao;
+import db.DB;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.sql.Connection;
+import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+        Connection conn = DB.getConnection();
+        DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
 
-        System.out.print("Enter full file path: ");
-        String path = sc.nextLine();
-        System.out.print("Enter salary: ");
-        Double baseSalary = sc.nextDouble();
+        System.out.println("============ FindAll ============");
+
+        List<Department> departmentList = departmentDao.findAll();
+        System.out.println(departmentList);
+
+        System.out.println("============ FindId ============");
+
+        System.out.println(departmentDao.findById(1));
+
+        System.out.println("============ InsertDepartment ============");
+
+        departmentDao.insert(new Department(null, "TI"));
+
+         System.out.println("============ UpdateDepartment ============");
+         departmentDao.update(new Department(9, "Teste"));
+
+        System.out.println("============ DeleteById ============");
+
+        departmentDao.deleteById(1);
 
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))){
-
-            String line = br.readLine();
-
-            List<Employee> employeeList = new ArrayList<>();
-            while(line != null){
-
-                String[] employees = line.split(",");
-                employeeList.add(new Employee(employees[1], employees[0], Double.parseDouble(employees[2])));
-                line = br.readLine();
-            }
-
-            List<Employee> newListToSalaryBase = employeeList.stream().filter(employee -> employee.getSalary() >= baseSalary).toList();
-
-            Double sum = employeeList.stream().filter(employee -> employee.getEmail().charAt(0) == 'm').map(Employee::getSalary).reduce(0.0, Double::sum);
-
-            for (Employee item: newListToSalaryBase){
-                System.out.println(item);
-            }
-            System.out.print("Sum of salary of people whose email starts with 'M': "+ sum);
-
-        } catch (Exception e) {
-            System.out.print("Error: "+ e.getMessage());
-        }
-
-        sc.close();
+        DB.closeConnection();
     }
 }
